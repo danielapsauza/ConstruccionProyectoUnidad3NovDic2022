@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,9 +23,6 @@ public class JsonTest {
     public void existeArchivo(){
         File archivoJson = new File("src/employees.json");
         assert(archivoJson.exists());
-
-        /*JsonReader archivoJson2 = new JsonReader();
-        Assertions.assertThrows(FileNotFoundException.class, ()->{ archivoJson2.readJson("src/employes.json");});*/
     }
 
     @Test
@@ -34,13 +32,12 @@ public class JsonTest {
         Assertions.assertThrows(FileNotFoundException.class, ()->{ archivoJson.readJson("src/employes.json");});
     }
 
-
     @Test
     @DisplayName("Validar Formato")
     public void validarFormato() throws FileNotFoundException, IOException, ParseException{
         
         JsonManager archivoJson = new JsonManager();
-        JSONObject json = archivoJson.readJson("src/employees.json");
-        Assertions.assertThrows(RuntimeException.class, ()->{ archivoJson.jsonValidation(json, "employe");});
+        JSONArray jsonaArray = archivoJson.readJson("src/employees.json");
+        Assertions.assertThrows(RuntimeException.class, ()->{ archivoJson.jsonValidation(jsonaArray, "employee");});
     }
 }
