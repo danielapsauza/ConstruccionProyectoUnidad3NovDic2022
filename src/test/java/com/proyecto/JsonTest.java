@@ -40,4 +40,12 @@ public class JsonTest {
         JSONArray jsonaArray = archivoJson.readJson("src/employees.json");
         Assertions.assertThrows(RuntimeException.class, ()->{ archivoJson.jsonValidation(jsonaArray, "employee");});
     }
+
+    @Test
+    @DisplayName("Convertir a Array de Objetos")
+    public void convertir() throws FileNotFoundException, IOException, ParseException{
+        JsonManager archivoJson = new JsonManager();
+        JSONArray jsonaArray = archivoJson.readJson("src/employees.json");
+        archivoJson.jsonConverterToObject(jsonaArray);
+    }
 }

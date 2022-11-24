@@ -9,6 +9,7 @@ public class pantalla {
     public static void main(String[] args) {
 
         JFrame pantalla = new JFrame("Pantalla Dummie");
+        //una matriz de string [][] informacion;
 
         String[][] informacion = {
                 { "ID1", "firstName1", "lastName1", "photo1" },
