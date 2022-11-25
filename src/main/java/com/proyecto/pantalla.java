@@ -33,7 +33,7 @@ public class pantalla {
 
     public String[][] convertidorAMatriz(List<ArrayList<Object>> informacionArray){
         int i = 0;
-       
+
         Object[] info = informacionArray.toArray();
         String[][] informacion = new String[info.length][4];
 
@@ -45,7 +45,7 @@ public class pantalla {
             informacion[i][1] = aux2[1].toString();
             informacion[i][2] = aux2[2].toString();
             informacion[i][3] = aux2[3].toString();
-            
+
             i++;
         }
 
@@ -53,7 +53,7 @@ public class pantalla {
     }
 
     public static void main(String[] args) {
-        
+
     }
 
 
