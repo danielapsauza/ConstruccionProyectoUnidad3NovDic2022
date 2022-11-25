@@ -15,8 +15,12 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
+import com.proyecto.Exceptions.ValidationException;
+
 
 public class JsonTest {
+
+    private pantalla pantalla;
 
     @Test
     @DisplayName("Existe Archivo")
@@ -47,5 +51,14 @@ public class JsonTest {
         JsonManager archivoJson = new JsonManager();
         JSONArray jsonaArray = archivoJson.readJson("src/employees.json");
         archivoJson.jsonConverterToObject(jsonaArray);
+    }
+
+    @Test
+    @DisplayName("enviar informacion a tabla")
+    public void enviar() throws FileNotFoundException, IOException, ParseException, ValidationException{
+        JsonManager jsonManager = new JsonManager();
+        JSONArray jsonArray = jsonManager.readJson("src/employees.json");
+        jsonManager.jsonValidation(jsonArray, "employee"); 
+        pantalla pantalla = new pantalla(jsonManager.jsonConverterToObject(jsonArray));
     }
 }
