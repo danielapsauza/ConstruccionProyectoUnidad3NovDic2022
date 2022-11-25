@@ -74,7 +74,7 @@ public class JsonManager {
             i++;
             listaEmpleadosString.add(innerArraylist);
         }
-        System.out.println(listaEmpleadosString.toString());
+        
 
         return listaEmpleadosString;
     }
