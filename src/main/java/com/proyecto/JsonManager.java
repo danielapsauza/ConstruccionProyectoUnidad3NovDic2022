@@ -74,8 +74,16 @@ public class JsonManager {
             i++;
             listaEmpleadosString.add(innerArraylist);
         }
-        
-
         return listaEmpleadosString;
+    }
+
+    private ArrayList<Object> getInfoNueva(){
+        ArrayList<Object> infoAux = new ArrayList<Object>();
+        //leer todo lo que llegue de textfields, son 3 textfields
+        return infoAux;
+    }
+
+    private void modificarEmployee(){
+        
     }
 }
