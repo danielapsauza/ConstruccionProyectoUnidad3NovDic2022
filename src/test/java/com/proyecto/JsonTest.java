@@ -42,7 +42,7 @@ public class JsonTest {
         
         JsonManager archivoJson = new JsonManager();
         JSONArray jsonaArray = archivoJson.readJson("src/employees.json");
-        Assertions.assertThrows(RuntimeException.class, ()->{ archivoJson.jsonValidation(jsonaArray, "employee");});
+        Assertions.assertThrows(RuntimeException.class, ()->{ archivoJson.jsonValidation(jsonaArray, "employe");});
     }
 
     @Test
