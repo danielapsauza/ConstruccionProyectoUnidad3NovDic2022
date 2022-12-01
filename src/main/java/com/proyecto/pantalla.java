@@ -148,8 +148,10 @@ public class Pantalla extends JFrame implements ActionListener{
             controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonEliminar.equals(e.getSource())) {
             editor.eliminarEmpleadoPantalla();
+            controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonAgregar.equals(e.getSource())) {
             editor.agregarEmpleadoPantalla();
+            controladorVista control1 = new controladorVista(this, editor);
         }
     }
 

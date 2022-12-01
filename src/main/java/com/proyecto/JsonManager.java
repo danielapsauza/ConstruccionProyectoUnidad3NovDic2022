@@ -16,7 +16,7 @@ import com.proyecto.Exceptions.ValidationException;
 
 public class JsonManager {
     Object jsonCrudo;
-    JSONObject jsonObj;
+    static JSONObject jsonObj;
     static JSONArray jsonArray;
     List<ArrayList<Object>> listaEmpleadosString = new ArrayList<>();
     
