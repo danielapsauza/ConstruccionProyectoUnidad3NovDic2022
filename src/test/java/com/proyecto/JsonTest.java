@@ -14,8 +14,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
+import com.proyecto.Exceptions.MissingIdException;
 import com.proyecto.Exceptions.ValidationException;
 
 
@@ -65,8 +67,23 @@ public class JsonTest {
     }
 
     @Test
-    @DisplayName("actualizarJSON")
-    public void actualizar() throws FileNotFoundException, IOException, ParseException, ValidationException{
+    @DisplayName("actualizarJSON-ModificarEmpleado")
+    public void actualizar() throws FileNotFoundException, IOException, ParseException, ValidationException, MissingIdException{
+        JsonManager jsonManager = new JsonManager();
+        JSONArray jsonArray = jsonManager.readJson("src/employees.json");
+        jsonManager.jsonValidation(jsonArray, "employee"); 
+        System.out.println(jsonArray);
+        System.out.println("Original________________________________________________________________________________________");
+        Pantalla pantalla1 = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
+        JsonMod editor = new JsonMod();
+        editor.modificarEmpleado();
+        controladorVista control1 = new controladorVista(pantalla1, editor);
+        //assertTrue(editor.nombreModificado.equals("JUAN"));
+    }
+
+    @Test
+    @DisplayName("actualizarJSON-EliminarEmpleado")
+    public void actualizarEliminar() throws FileNotFoundException, IOException, ParseException, ValidationException, MissingIdException{
         JsonManager jsonManager = new JsonManager();
         JSONArray jsonArray = jsonManager.readJson("src/employees.json");
         jsonManager.jsonValidation(jsonArray, "employee"); 
@@ -75,7 +92,7 @@ public class JsonTest {
         Pantalla pantalla1 = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
         JsonMod editor = new JsonMod();
         controladorVista control1 = new controladorVista(pantalla1, editor);
-        Assertions.assertThrows(RuntimeException.class, ()->{editor.actualizarListaEmpleados();});
-        
+        editor.eliminarEmpleado();
+        assertTrue((editor.numEmpleadosOriginal-editor.numEmpleadosNuevo)==1);
     }
 }
