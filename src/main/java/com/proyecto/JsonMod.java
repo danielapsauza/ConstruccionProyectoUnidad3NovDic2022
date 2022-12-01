@@ -24,6 +24,7 @@ public class JsonMod extends JFrame implements ActionListener{
     private JTextField textFieldImg;
     private JLabel label1;
     private JButton buttonAceptar = new JButton("Aceptar");
+    public static JSONArray arrayAux = new JSONArray();
 
     public void editarEmpleadoPantalla(Object[][] informacion){
         identificador = JOptionPane.showInputDialog(null, "Ingrese el id del empleado que desea modificar");
@@ -79,14 +80,12 @@ public class JsonMod extends JFrame implements ActionListener{
     }
 
     public JButton getButtonAceptar() {
-        System.out.println("conseguí el botón");
         return buttonAceptar;
     }
 
     public void actualizarListaEmpleados(){
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
-        JSONArray arrayAux = new JSONArray();
         JSONObject objAux = new JSONObject();
 
         empleadoAux.put("id", identificador);
@@ -119,8 +118,5 @@ public class JsonMod extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (buttonAceptar.equals(e.getSource())) {
-            System.out.println("qpd?");
-        }
     }
 }

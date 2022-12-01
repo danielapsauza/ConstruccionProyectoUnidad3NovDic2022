@@ -33,17 +33,32 @@ public class Pantalla extends JFrame implements ActionListener{
     JTable tablaInformacion;
     JScrollPane scrollPanel;
 
- 
-    public Pantalla (){
-    }
-
     public Pantalla(List<ArrayList<Object>> informacionArray){
         crearPantalla(convertidorAMatriz(informacionArray));
     }
 
+    public Pantalla (JSONArray jsonArray){
+        Object[] infoNueva = jsonArray.toArray();
+        Object[][] informacionNueva = new Object[infoNueva.length][4];
+        int i=0;
+
+        for(Object obj : infoNueva){
+            ArrayList aux = (ArrayList) obj;
+
+            Object[] aux2 = aux.toArray();
+            informacionNueva[i][0] = aux2[0].toString();
+            informacionNueva[i][1] = aux2[1].toString();
+            informacionNueva[i][2] = aux2[2].toString();
+
+            informacionNueva[i][3] = getImgIcon(aux2[3].toString());
+            
+            i++;
+        }
+        crearPantalla(informacionNueva);
+    }
+
     public static Object[][] convertidorAMatriz(List<ArrayList<Object>> informacionArray){
         int i = 0;
-       
         Object[] info = informacionArray.toArray();
         Object[][] informacion = new Object[info.length][4];
 
@@ -129,6 +144,7 @@ public class Pantalla extends JFrame implements ActionListener{
 
         if (buttonModificar.equals(e.getSource())) {
             editor.editarEmpleadoPantalla(informacion);
+            controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonEliminar.equals(e.getSource())) {
             editor.eliminarEmpleadoPantalla();
         } else if (buttonAgregar.equals(e.getSource())) {
@@ -136,17 +152,22 @@ public class Pantalla extends JFrame implements ActionListener{
         }
     }
 
-    public static void actualizar(List<ArrayList<Object>> informacionArray){
-        //crearPantalla(convertidorAMatriz(informacionArray));
-    }
+    public  void refresh(Pantalla pantalla1) throws FileNotFoundException, IOException, ParseException, ValidationException{
+        pantallaJframe.remove(scrollPanel); 
+        pantallaJframe.remove(buttonAgregar);
+        pantallaJframe.remove(buttonEliminar);
+        pantallaJframe.remove(buttonModificar);
+        informacion = null;
+        model=null;
+        scrollPanel=null;
+        JsonMod.arrayAux.clear();
 
-    public static void refresh(Pantalla pantalla) throws FileNotFoundException, IOException, ParseException, ValidationException{
-        pantallaJframe.repaint();
         JsonManager jsonManager2 = new JsonManager();
         JSONArray jsonArray2 = jsonManager2.readJson("src/employees.json");
-        jsonManager2.jsonValidation(jsonArray2, "employee"); 
-        Pantalla.actualizar(jsonManager2.jsonConverterToObject(jsonArray2));
-        pantalla = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
+        jsonManager2.jsonValidation(jsonArray2, "employee");
+        
+        pantalla1 = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
+        
         System.out.println(jsonArray2);
         System.out.println("Editado________________________________________________________________________________________");
         

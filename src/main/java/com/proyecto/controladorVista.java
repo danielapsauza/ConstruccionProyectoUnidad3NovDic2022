@@ -18,14 +18,13 @@ public class controladorVista implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (jsonMod.getButtonAceptar().equals(e.getSource())) {
-            System.out.println("qpd?");
             jsonMod.actualizarListaEmpleados();
             jsonMod.dispose();
             Pantalla.pantallaJframe.pack();
             Pantalla.pantallaJframe.repaint();
             Pantalla.pantallaJframe.dispose();
                 try {
-                    pantalla.refresh(pantalla);
+                    pantalla.refresh(this.pantalla);
                 } catch (IOException | org.json.simple.parser.ParseException | ValidationException e1) {
                     e1.printStackTrace();
                 }

@@ -17,8 +17,6 @@ public class test {
         System.out.println(jsonArray);
         System.out.println("Original________________________________________________________________________________________");
         Pantalla pantalla1 = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
-        JsonMod jMod = new JsonMod();
-        controladorVista control1 = new controladorVista(pantalla1, jMod);
     }
     
 }
