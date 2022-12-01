@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import com.proyecto.Exceptions.ErrorUpdateException;
+import com.proyecto.Exceptions.MissingIdException;
 import com.proyecto.Exceptions.ValidationException;
 
 import java.awt.event.*;
@@ -27,8 +28,11 @@ public class JsonMod extends JFrame implements ActionListener{
     private JButton buttonAceptar = new JButton("Aceptar");
     public static JSONArray arrayAux = new JSONArray();
     private String accion;
+    //public static String nombreModificado="";
+    public static int numEmpleadosOriginal=0;
+    public static int numEmpleadosNuevo=0;
 
-    public void editarEmpleadoPantalla(Object[][] informacion){
+    public void editarEmpleadoPantalla(){
         accion = "modificar";
         identificador = JOptionPane.showInputDialog(null, "Ingrese el id del empleado que desea modificar");
         setLayout(null);
@@ -108,56 +112,20 @@ public class JsonMod extends JFrame implements ActionListener{
         return buttonAceptar;
     }
 
-    public void actualizarListaEmpleados() throws ErrorUpdateException{
+    public void actualizarListaEmpleados() throws ErrorUpdateException, MissingIdException{
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
         JSONObject objAux = new JSONObject();
         //si no inicializas identificador, tira la exception, entonces test correcto
-        //identificador se inicializa en editarEmpleadoPantalla
-        empleadoAux.put("id", identificador);
+        
         if(accion == "modificar"){
-
-            /*PRUEBAS
-            identificador="1"; 
-            empleadoAux.put("id", identificador);
-            empleadoAux.put("firstName", "ejemplo");
-            empleadoAux.put("lastName", "ejemplo");
-            empleadoAux.put("photo", "https://jsonformatter.org/img/tom-cruise.jpg");
-            */
-
-            /*Correcto */
-           
-            empleadoAux.put("firstName", textFieldName.getText());
-            empleadoAux.put("lastName", textFieldLastName.getText());
-            empleadoAux.put("photo", textFieldImg.getText());
-            
-            
-            for (Object object : jsonArrayEmpleados) {
-                JSONObject jsonObjectAux = (JSONObject)object;
-
-                if (jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
-                    //insertamos todos los valores de empleadoAux al empleado del jsonArray
-                    jsonObjectAux.put("firstName", empleadoAux.get("firstName"));
-                    jsonObjectAux.put("lastName", empleadoAux.get("lastName"));
-                    jsonObjectAux.put("photo", empleadoAux.get("photo"));
-                }
-                arrayAux.add(jsonObjectAux);
-            }
-            
-
+            objAux = modificarEmpleado();
         }else if(accion == "eliminar"){
-            int idNuevo=1;
-            for (Object object : jsonArrayEmpleados) {
-                JSONObject jsonObjectAux = (JSONObject)object;
-                if (!jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
-                    jsonObjectAux.put("id", idNuevo);
-                    arrayAux.add(jsonObjectAux);
-                    idNuevo++;
-                }
-             }
+           objAux = eliminarEmpleado();
+        }else if (accion == "agregar"){
+            objAux = agregarEmpleado();
         }
 
-        objAux.put("employee", arrayAux);
         try {
             System.out.println(objAux);
             System.out.println("----------------------JSON editado");
@@ -173,5 +141,90 @@ public class JsonMod extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
+
+    public JSONObject eliminarEmpleado() throws MissingIdException{
+        JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
+        JSONObject empleadoAux = new JSONObject();
+        JSONObject objAux = new JSONObject();
+        empleadoAux.put("id", identificador);
+        int idNuevo=1;
+
+        /*PRUEBAS*/
+            identificador="2"; 
+
+            for (Object object : jsonArrayEmpleados) {
+                JSONObject jsonObjectAux = (JSONObject)object;
+                numEmpleadosOriginal++;
+
+
+                if (!jsonObjectAux.get("id").equals(identificador)) {
+                    jsonObjectAux.put("id", idNuevo);
+                    arrayAux.add(jsonObjectAux);
+                    idNuevo++;
+                    numEmpleadosNuevo++;
+                }
+             }
+             if( Integer.parseInt(identificador) > numEmpleadosOriginal){
+                arrayAux.clear();
+                dispose();
+                throw new MissingIdException(identificador);
+            }else{
+                
+            objAux.put("employee", arrayAux);
+            return objAux;
+            }
+        }
+
+    public JSONObject modificarEmpleado() throws MissingIdException{
+        JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
+        JSONObject empleadoAux = new JSONObject();
+        JSONObject objAux = new JSONObject();
+        empleadoAux.put("id", identificador);
+        boolean idExists=false;
+        
+
+        /*PRUEBAS
+            identificador="1"; 
+            empleadoAux.put("id", identificador);
+            empleadoAux.put("firstName", "JUAN");
+            empleadoAux.put("lastName", "GARCILAZO");
+            empleadoAux.put("photo", "https://jsonformatter.org/img/Robert-Downey-Jr.jpg");
+            nombreModificado = (String)empleadoAux.get("firstName");
+            */
+
+            /*Correcto */
+           
+            empleadoAux.put("firstName", textFieldName.getText());
+            empleadoAux.put("lastName", textFieldLastName.getText());
+            empleadoAux.put("photo", textFieldImg.getText());
+        
+            
+            for (Object object : jsonArrayEmpleados) {
+                JSONObject jsonObjectAux = (JSONObject)object;
+
+                if (jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
+                    //insertamos todos los valores de empleadoAux al empleado del jsonArray
+                    jsonObjectAux.put("firstName", empleadoAux.get("firstName"));
+                    jsonObjectAux.put("lastName", empleadoAux.get("lastName"));
+                    jsonObjectAux.put("photo", empleadoAux.get("photo"));
+                    idExists=true;
+
+                }
+                arrayAux.add(jsonObjectAux);
+            }
+            if(!idExists){
+                arrayAux.clear();
+                dispose();
+                throw new MissingIdException(identificador);
+            }else{
+        objAux.put("employee", arrayAux);
+        return objAux;
+            }
+    }
+    
+    public JSONObject agregarEmpleado(){
+        JSONObject objAux = new JSONObject();
+        return objAux;
     }
 }

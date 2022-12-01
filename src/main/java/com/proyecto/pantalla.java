@@ -144,7 +144,8 @@ public class Pantalla extends JFrame implements ActionListener{
         JsonMod editor = new JsonMod();
 
         if (buttonModificar.equals(e.getSource())) {
-            editor.editarEmpleadoPantalla(informacion);
+            editor.editarEmpleadoPantalla();
+            //editor.editarEmpleadoPantalla(informacion);
             controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonEliminar.equals(e.getSource())) {
             editor.eliminarEmpleadoPantalla();
