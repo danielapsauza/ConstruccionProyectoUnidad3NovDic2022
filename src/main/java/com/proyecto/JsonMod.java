@@ -114,37 +114,50 @@ public class JsonMod extends JFrame implements ActionListener{
         JSONObject objAux = new JSONObject();
         //si no inicializas identificador, tira la exception, entonces test correcto
         //identificador se inicializa en editarEmpleadoPantalla
-
-        /*PRUEBAS
-         
-        identificador="1"; 
         empleadoAux.put("id", identificador);
-        empleadoAux.put("firstName", "ejemplo");
-        empleadoAux.put("lastName", "ejemplo");
-        empleadoAux.put("photo", "https://jsonformatter.org/img/tom-cruise.jpg");
-        */
-        
+        if(accion == "modificar"){
 
-        /*Correcto */
-        empleadoAux.put("id", identificador);
-        empleadoAux.put("firstName", textFieldName.getText());
-        empleadoAux.put("lastName", textFieldLastName.getText());
-        empleadoAux.put("photo", textFieldImg.getText());
-        
-        
-        for (Object object : jsonArrayEmpleados) {
-            JSONObject jsonObjectAux = (JSONObject)object;
+            /*PRUEBAS
+            identificador="1"; 
+            empleadoAux.put("id", identificador);
+            empleadoAux.put("firstName", "ejemplo");
+            empleadoAux.put("lastName", "ejemplo");
+            empleadoAux.put("photo", "https://jsonformatter.org/img/tom-cruise.jpg");
+            */
 
-            if (jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
-                //insertamos todos los valores de empleadoAux al empleado del jsonArray
-                jsonObjectAux.put("firstName", empleadoAux.get("firstName"));
-                jsonObjectAux.put("lastName", empleadoAux.get("lastName"));
-                jsonObjectAux.put("photo", empleadoAux.get("photo"));
+            /*Correcto */
+           
+            empleadoAux.put("firstName", textFieldName.getText());
+            empleadoAux.put("lastName", textFieldLastName.getText());
+            empleadoAux.put("photo", textFieldImg.getText());
+            
+            
+            for (Object object : jsonArrayEmpleados) {
+                JSONObject jsonObjectAux = (JSONObject)object;
+
+                if (jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
+                    //insertamos todos los valores de empleadoAux al empleado del jsonArray
+                    jsonObjectAux.put("firstName", empleadoAux.get("firstName"));
+                    jsonObjectAux.put("lastName", empleadoAux.get("lastName"));
+                    jsonObjectAux.put("photo", empleadoAux.get("photo"));
+                }
+                arrayAux.add(jsonObjectAux);
             }
-              arrayAux.add(jsonObjectAux);
-        }
-        objAux.put("employee", arrayAux);
+            
 
+        }else if(accion == "eliminar"){
+            int idNuevo=1;
+            for (Object object : jsonArrayEmpleados) {
+                JSONObject jsonObjectAux = (JSONObject)object;
+                if (!jsonObjectAux.get("id").equals(empleadoAux.get("id"))) {
+                    jsonObjectAux.put("id", idNuevo);
+                    arrayAux.add(jsonObjectAux);
+                    idNuevo++;
+                }
+             }
+        }
+
+        objAux.put("employee", arrayAux);
         try {
             System.out.println(objAux);
             System.out.println("----------------------JSON editado");
