@@ -22,19 +22,22 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import com.proyecto.Exceptions.ValidationException;
 
-public class pantalla extends JFrame implements ActionListener{
-    JButton buttonModificar;
-    JButton buttonAgregar;
-    JButton buttonEliminar;
+public class Pantalla extends JFrame implements ActionListener{
+    JButton buttonModificar = new JButton("Modificar");
+    JButton buttonAgregar = new JButton("Agregar");
+    JButton buttonEliminar = new JButton("Eliminar");
     String[] columnas = { "ID", "firstName", "lastName", "photo" };
-    Object[][] informacion;
+    public  Object[][] informacion;
+    static JFrame pantallaJframe = new JFrame("Pantalla Dummie");
+    public  DefaultTableModel model;
+    JTable tablaInformacion;
+    JScrollPane scrollPanel;
 
-    public pantalla(List<ArrayList<Object>> informacionArray){
+    public Pantalla(List<ArrayList<Object>> informacionArray){
         crearPantalla(convertidorAMatriz(informacionArray));
     }
 
-
-    public Object[][] convertidorAMatriz(List<ArrayList<Object>> informacionArray){
+    public static Object[][] convertidorAMatriz(List<ArrayList<Object>> informacionArray){
         int i = 0;
        
         Object[] info = informacionArray.toArray();
@@ -52,56 +55,59 @@ public class pantalla extends JFrame implements ActionListener{
             
             i++;
         }
-
         return informacion;
     }
 
     public void crearPantalla(Object[][] matrizEmpleados){
-        JFrame pantalla = new JFrame("Pantalla Dummie");
         informacion = matrizEmpleados;
-        buttonModificar = new JButton("Modificar");
-        buttonAgregar = new JButton("Agregar");
-        buttonEliminar = new JButton("Eliminar");
-
-        DefaultTableModel model = new DefaultTableModel(informacion, columnas) {
+        model = new DefaultTableModel(informacion, columnas) {
             @Override
             public Class getColumnClass(int column) {
                 return getValueAt(0, column).getClass();
             }
         };
 
-        JTable tablaInformacion = new JTable(model){
+        tablaInformacion = new JTable(model){
             @Override
             public boolean isCellEditable(int row, int column) {
-                if(column == 0 || column == 3){
+                if(column == 0 || column == 1 || column == 2 || column == 3 ){
                     return false;
                 }else{
                     return true;
                 }
             }
         };
-        
+
         tablaInformacion.setBounds(500, 500, 700, 400);
         tablaInformacion.setRowHeight(200);
         tablaInformacion.setPreferredScrollableViewportSize(new Dimension(750, 720));
 
-        JScrollPane scrollPanel = new JScrollPane(tablaInformacion);
+        scrollPanel = new JScrollPane(tablaInformacion);
         scrollPanel.setBounds(500, 500, 700, 400);
         
-        pantalla.setResizable(false);
-        pantalla.setLayout(new FlowLayout());
-        pantalla.add(buttonModificar);
-        pantalla.add(buttonEliminar);
-        pantalla.add(buttonAgregar);
-        pantalla.add(scrollPanel);
+        pantallaJframe.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+
+        pantallaJframe.setResizable(false);
+        pantallaJframe.setLayout(new FlowLayout());
+        pantallaJframe.add(buttonModificar);
+        pantallaJframe.add(buttonEliminar);
+        pantallaJframe.add(buttonAgregar);
+        pantallaJframe.add(scrollPanel);
+
         buttonModificar.addActionListener(this);
         buttonEliminar.addActionListener(this);
         buttonAgregar.addActionListener(this);
-        pantalla.setSize(800, 800);
-        pantalla.setVisible(true);
+
+        pantallaJframe.setSize(800, 800);
+        pantallaJframe.setVisible(true);
     }
 
-    private Icon getImgIcon(String urlStr) {
+    private static Icon getImgIcon(String urlStr) {
 
         try {
             URL url = new URL(urlStr);
@@ -118,31 +124,31 @@ public class pantalla extends JFrame implements ActionListener{
         JsonMod editor = new JsonMod();
 
         if (buttonModificar.equals(e.getSource())) {
-            editor.editarEmpleado(informacion);
-            dispose();
-            refresh();
+            editor.editarEmpleadoPantalla(informacion);
         } else if (buttonEliminar.equals(e.getSource())) {
-            editor.eliminarEmpleado();
-            dispose();
-            refresh();
+            editor.eliminarEmpleadoPantalla();
         } else if (buttonAgregar.equals(e.getSource())) {
-            editor.agregarEmpleado();
-            dispose();
-            refresh();
+            editor.agregarEmpleadoPantalla();
         }
-
     }
     
-    public void refresh(){
-
+    public static void refresh() throws FileNotFoundException, IOException, ParseException, ValidationException{
+        pantallaJframe.repaint();
+        JsonManager jsonManager2 = new JsonManager();
+        JSONArray jsonArray2 = jsonManager2.readJson("src/employees.json");
+        jsonManager2.jsonValidation(jsonArray2, "employee"); 
+        Pantalla pantalla2 = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
+        System.out.println(jsonArray2);
+        System.out.println("Editado________________________________________________________________________________________");
     }
     
-
     public static void main(String[] args) throws ValidationException, FileNotFoundException, IOException, ParseException {
         JsonManager jsonManager = new JsonManager();
         JSONArray jsonArray = jsonManager.readJson("src/employees.json");
         jsonManager.jsonValidation(jsonArray, "employee"); 
-        pantalla pantalla = new pantalla(jsonManager.jsonConverterToObject(jsonArray));
+        System.out.println(jsonArray);
+        System.out.println("Original________________________________________________________________________________________");
+        pantallaJframe = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
     }
 
 

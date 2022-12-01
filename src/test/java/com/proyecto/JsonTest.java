@@ -20,7 +20,7 @@ import com.proyecto.Exceptions.ValidationException;
 
 public class JsonTest {
 
-    private pantalla pantalla;
+    private Pantalla pantalla;
 
     @Test
     @DisplayName("Existe Archivo")
@@ -53,12 +53,12 @@ public class JsonTest {
         archivoJson.jsonConverterToObject(jsonaArray);
     }
 
-    @Test
+    /*@Test
     @DisplayName("enviar informacion a tabla")
     public void enviar() throws FileNotFoundException, IOException, ParseException, ValidationException{
         JsonManager jsonManager = new JsonManager();
         JSONArray jsonArray = jsonManager.readJson("src/employees.json");
         jsonManager.jsonValidation(jsonArray, "employee"); 
-        pantalla pantalla = new pantalla(jsonManager.jsonConverterToObject(jsonArray));
-    }
+        Pantalla pantalla = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
+    }*/
 }
