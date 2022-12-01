@@ -17,7 +17,7 @@ import com.proyecto.Exceptions.ValidationException;
 public class JsonManager {
     Object jsonCrudo;
     JSONObject jsonObj;
-    JSONArray jsonArray;
+    static JSONArray jsonArray;
     List<ArrayList<Object>> listaEmpleadosString = new ArrayList<>();
     
     public JSONArray readJson(String ruta) throws FileNotFoundException, IOException, ParseException{
@@ -27,6 +27,10 @@ public class JsonManager {
           jsonArray  = (JSONArray) jsonObj.get("employee");
 
          return jsonArray;
+    }
+
+    public static JSONArray obtenerJsonArray(){
+        return jsonArray;
     }
 
     public void jsonValidation(JSONArray jsonArray, String key) throws ValidationException{
@@ -75,15 +79,5 @@ public class JsonManager {
             listaEmpleadosString.add(innerArraylist);
         }
         return listaEmpleadosString;
-    }
-
-    private ArrayList<Object> getInfoNueva(){
-        ArrayList<Object> infoAux = new ArrayList<Object>();
-        //leer todo lo que llegue de textfields, son 3 textfields
-        return infoAux;
-    }
-
-    private void modificarEmployee(){
-        
     }
 }
