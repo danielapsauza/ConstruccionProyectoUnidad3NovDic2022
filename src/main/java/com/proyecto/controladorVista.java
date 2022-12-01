@@ -2,6 +2,8 @@ package com.proyecto;
 import java.awt.event.*;
 import java.io.IOException;
 import java.text.ParseException;
+
+import com.proyecto.Exceptions.ErrorUpdateException;
 import com.proyecto.Exceptions.ValidationException;
 
 public class controladorVista implements ActionListener{
@@ -18,7 +20,11 @@ public class controladorVista implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (jsonMod.getButtonAceptar().equals(e.getSource())) {
-            jsonMod.actualizarListaEmpleados();
+            try {
+                jsonMod.actualizarListaEmpleados();
+            } catch (ErrorUpdateException e2) {
+                e2.printStackTrace();
+            }
             jsonMod.dispose();
             Pantalla.pantallaJframe.pack();
             Pantalla.pantallaJframe.repaint();

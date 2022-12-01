@@ -10,6 +10,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.proyecto.Exceptions.ErrorUpdateException;
 import com.proyecto.Exceptions.ValidationException;
 
 import java.awt.event.*;
@@ -83,15 +84,29 @@ public class JsonMod extends JFrame implements ActionListener{
         return buttonAceptar;
     }
 
-    public void actualizarListaEmpleados(){
+    public void actualizarListaEmpleados() throws ErrorUpdateException{
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
         JSONObject objAux = new JSONObject();
+        //si no inicializas identificador, tira la exception, entonces test correcto
+        //identificador se inicializa en editarEmpleadoPantalla
 
+        /*PRUEBAS
+         
+        identificador="1"; 
+        empleadoAux.put("id", identificador);
+        empleadoAux.put("firstName", "ejemplo");
+        empleadoAux.put("lastName", "ejemplo");
+        empleadoAux.put("photo", "https://jsonformatter.org/img/tom-cruise.jpg");
+        */
+        
+
+        /*Correcto */
         empleadoAux.put("id", identificador);
         empleadoAux.put("firstName", textFieldName.getText());
         empleadoAux.put("lastName", textFieldLastName.getText());
         empleadoAux.put("photo", textFieldImg.getText());
+        
         
         for (Object object : jsonArrayEmpleados) {
             JSONObject jsonObjectAux = (JSONObject)object;
@@ -107,12 +122,15 @@ public class JsonMod extends JFrame implements ActionListener{
         objAux.put("employee", arrayAux);
 
         try {
+            System.out.println(objAux);
+            System.out.println("----------------------JSON editado");
 			FileWriter file = new FileWriter("src/employees.json");
 			file.write(objAux.toJSONString());
 			file.flush();
 			file.close();
 		} catch (IOException e) {
-			System.out.println("error");;
+			System.out.println("error");
+            throw new ErrorUpdateException(identificador);
 		}
     }
 

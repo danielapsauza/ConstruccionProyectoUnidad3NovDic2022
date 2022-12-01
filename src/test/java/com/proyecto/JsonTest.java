@@ -1,5 +1,6 @@
 package com.proyecto;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.beans.ExceptionListener;
@@ -60,5 +61,21 @@ public class JsonTest {
         JSONArray jsonArray = jsonManager.readJson("src/employees.json");
         jsonManager.jsonValidation(jsonArray, "employee"); 
         Pantalla pantalla = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
+        System.out.println("pantalla creada");
+    }
+
+    @Test
+    @DisplayName("actualizarJSON")
+    public void actualizar() throws FileNotFoundException, IOException, ParseException, ValidationException{
+        JsonManager jsonManager = new JsonManager();
+        JSONArray jsonArray = jsonManager.readJson("src/employees.json");
+        jsonManager.jsonValidation(jsonArray, "employee"); 
+        System.out.println(jsonArray);
+        System.out.println("Original________________________________________________________________________________________");
+        Pantalla pantalla1 = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
+        JsonMod editor = new JsonMod();
+        controladorVista control1 = new controladorVista(pantalla1, editor);
+        Assertions.assertThrows(RuntimeException.class, ()->{editor.actualizarListaEmpleados();});
+        
     }
 }

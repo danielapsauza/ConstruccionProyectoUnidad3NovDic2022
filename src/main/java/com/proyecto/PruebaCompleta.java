@@ -8,7 +8,7 @@ import org.json.simple.parser.ParseException;
 
 import com.proyecto.Exceptions.ValidationException;
 
-public class test {
+public class PruebaCompleta {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ParseException, ValidationException {
         JsonManager jsonManager = new JsonManager();

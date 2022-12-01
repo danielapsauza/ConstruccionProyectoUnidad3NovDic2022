@@ -124,6 +124,7 @@ public class Pantalla extends JFrame implements ActionListener{
 
         pantallaJframe.setSize(800, 800);
         pantallaJframe.setVisible(true);
+        
     }
 
     private static Icon getImgIcon(String urlStr) {
@@ -168,8 +169,8 @@ public class Pantalla extends JFrame implements ActionListener{
         
         pantalla1 = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
         
-        System.out.println(jsonArray2);
-        System.out.println("Editado________________________________________________________________________________________");
+        //System.out.println(jsonArray2);
+        //System.out.println("Editado________________________________________________________________________________________");
         
     }
     
