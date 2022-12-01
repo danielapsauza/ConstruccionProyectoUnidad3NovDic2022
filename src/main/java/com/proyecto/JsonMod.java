@@ -23,7 +23,7 @@ public class JsonMod extends JFrame implements ActionListener{
     private JTextField textFieldLastName;
     private JTextField textFieldImg;
     private JLabel label1;
-    private JButton buttonAceptar;
+    private JButton buttonAceptar = new JButton("Aceptar");
 
     public void editarEmpleadoPantalla(Object[][] informacion){
         identificador = JOptionPane.showInputDialog(null, "Ingrese el id del empleado que desea modificar");
@@ -57,7 +57,6 @@ public class JsonMod extends JFrame implements ActionListener{
         textFieldImg.setBounds(120,70,300,20);
         add(textFieldImg);
     
-        buttonAceptar=new JButton("Aceptar");
         buttonAceptar.setBounds(10,100,100,30);
         add(buttonAceptar);
 
@@ -68,7 +67,6 @@ public class JsonMod extends JFrame implements ActionListener{
             }
         });
     
-        buttonAceptar.addActionListener(this);
         setVisible(true); 
     }
 
@@ -80,22 +78,11 @@ public class JsonMod extends JFrame implements ActionListener{
         
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (buttonAceptar.equals(e.getSource())) {
-            actualizarListaEmpleados();
-            dispose();
-            Pantalla.pantallaJframe.pack();
-            Pantalla.pantallaJframe.repaint();
-            Pantalla.pantallaJframe.dispose();
-            try {
-                Pantalla.refresh();
-            } catch (IOException | ParseException | ValidationException e1) {
-                e1.printStackTrace();
-            }
-        }  
+    public JButton getButtonAceptar() {
+        System.out.println("conseguí el botón");
+        return buttonAceptar;
     }
-    
+
     public void actualizarListaEmpleados(){
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
@@ -128,5 +115,12 @@ public class JsonMod extends JFrame implements ActionListener{
 		} catch (IOException e) {
 			System.out.println("error");;
 		}
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (buttonAceptar.equals(e.getSource())) {
+            System.out.println("qpd?");
+        }
     }
 }

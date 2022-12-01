@@ -33,6 +33,10 @@ public class Pantalla extends JFrame implements ActionListener{
     JTable tablaInformacion;
     JScrollPane scrollPanel;
 
+ 
+    public Pantalla (){
+    }
+
     public Pantalla(List<ArrayList<Object>> informacionArray){
         crearPantalla(convertidorAMatriz(informacionArray));
     }
@@ -131,25 +135,21 @@ public class Pantalla extends JFrame implements ActionListener{
             editor.agregarEmpleadoPantalla();
         }
     }
-    
-    public static void refresh() throws FileNotFoundException, IOException, ParseException, ValidationException{
+
+    public static void actualizar(List<ArrayList<Object>> informacionArray){
+        //crearPantalla(convertidorAMatriz(informacionArray));
+    }
+
+    public static void refresh(Pantalla pantalla) throws FileNotFoundException, IOException, ParseException, ValidationException{
         pantallaJframe.repaint();
         JsonManager jsonManager2 = new JsonManager();
         JSONArray jsonArray2 = jsonManager2.readJson("src/employees.json");
         jsonManager2.jsonValidation(jsonArray2, "employee"); 
-        Pantalla pantalla2 = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
+        Pantalla.actualizar(jsonManager2.jsonConverterToObject(jsonArray2));
+        pantalla = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
         System.out.println(jsonArray2);
         System.out.println("Editado________________________________________________________________________________________");
+        
     }
     
-    public static void main(String[] args) throws ValidationException, FileNotFoundException, IOException, ParseException {
-        JsonManager jsonManager = new JsonManager();
-        JSONArray jsonArray = jsonManager.readJson("src/employees.json");
-        jsonManager.jsonValidation(jsonArray, "employee"); 
-        System.out.println(jsonArray);
-        System.out.println("Original________________________________________________________________________________________");
-        pantallaJframe = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
-    }
-
-
 }
