@@ -26,8 +26,10 @@ public class JsonMod extends JFrame implements ActionListener{
     private JLabel label1;
     private JButton buttonAceptar = new JButton("Aceptar");
     public static JSONArray arrayAux = new JSONArray();
+    private String accion;
 
     public void editarEmpleadoPantalla(Object[][] informacion){
+        accion = "modificar";
         identificador = JOptionPane.showInputDialog(null, "Ingrese el id del empleado que desea modificar");
         setLayout(null);
         setBounds(0,0,450,180);
@@ -73,7 +75,29 @@ public class JsonMod extends JFrame implements ActionListener{
     }
 
     public void eliminarEmpleadoPantalla(){
+        accion = "eliminar";
         identificador = JOptionPane.showInputDialog(null, "Ingrese el id del empleado que desea eliminar");
+        setLayout(null);
+        setBounds(0,0,450,180);
+        setTitle("Eliminar Empleado");
+        setResizable(false);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        label1=new JLabel("Se eliminará el empleado con id: " + identificador);
+        label1.setBounds(120,40,250,30);
+        add(label1);
+
+        buttonAceptar.setBounds(170,100,100,30);
+        add(buttonAceptar);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+
+        setVisible(true);
     }
 
     public void agregarEmpleadoPantalla(){
