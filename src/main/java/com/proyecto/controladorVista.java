@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.text.ParseException;
 
+import com.proyecto.Exceptions.ErrorNuevoEmpleadoException;
 import com.proyecto.Exceptions.ErrorUpdateException;
 import com.proyecto.Exceptions.MissingIdException;
 import com.proyecto.Exceptions.ValidationException;
@@ -21,13 +22,12 @@ public class controladorVista implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (jsonMod.getButtonAceptar().equals(e.getSource())) {
-            
-                try {
-                    jsonMod.actualizarListaEmpleados();
-                } catch (ErrorUpdateException | MissingIdException e1) {
-                    e1.printStackTrace();
-                }
-            
+                    try {
+                        jsonMod.actualizarListaEmpleados();
+                    } catch (ErrorUpdateException | MissingIdException | ErrorNuevoEmpleadoException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
             }
             jsonMod.dispose();
             Pantalla.pantallaJframe.pack();
