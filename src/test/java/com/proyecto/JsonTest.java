@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
+import com.proyecto.Exceptions.ErrorNuevoEmpleadoException;
 import com.proyecto.Exceptions.MissingIdException;
 import com.proyecto.Exceptions.ValidationException;
 
@@ -78,7 +79,7 @@ public class JsonTest {
         JsonMod editor = new JsonMod();
         editor.modificarEmpleado();
         controladorVista control1 = new controladorVista(pantalla1, editor);
-        //assertTrue(editor.nombreModificado.equals("JUAN"));
+        assertTrue(editor.nombreModificado.equals("TOMAS"));
     }
 
     @Test
@@ -94,5 +95,20 @@ public class JsonTest {
         controladorVista control1 = new controladorVista(pantalla1, editor);
         editor.eliminarEmpleado();
         assertTrue((editor.numEmpleadosOriginal-editor.numEmpleadosNuevo)==1);
+    }
+
+    @Test
+    @DisplayName("actualizarJSON-AgregarEmpleado")
+    public void actualizarAgregar() throws FileNotFoundException, IOException, ParseException, ValidationException, MissingIdException, ErrorNuevoEmpleadoException{
+        JsonManager jsonManager = new JsonManager();
+        JSONArray jsonArray = jsonManager.readJson("src/employees.json");
+        jsonManager.jsonValidation(jsonArray, "employee"); 
+        System.out.println(jsonArray);
+        System.out.println("Original________________________________________________________________________________________");
+        Pantalla pantalla1 = new Pantalla(jsonManager.jsonConverterToObject(jsonArray));
+        JsonMod editor = new JsonMod();
+        editor.agregarEmpleado();
+        controladorVista control1 = new controladorVista(pantalla1, editor);
+        assertTrue(editor.nombreNuevoEmpleado.equals("EMANUEL"));
     }
 }

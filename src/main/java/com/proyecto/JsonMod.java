@@ -10,6 +10,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.proyecto.Exceptions.ErrorNuevoEmpleadoException;
 import com.proyecto.Exceptions.ErrorUpdateException;
 import com.proyecto.Exceptions.MissingIdException;
 import com.proyecto.Exceptions.ValidationException;
@@ -28,9 +29,12 @@ public class JsonMod extends JFrame implements ActionListener{
     private JButton buttonAceptar = new JButton("Aceptar");
     public static JSONArray arrayAux = new JSONArray();
     private String accion;
-    //public static String nombreModificado="";
+
+    //pruebas
+    public static String nombreModificado="";
     public static int numEmpleadosOriginal=0;
     public static int numEmpleadosNuevo=0;
+    public static String nombreNuevoEmpleado = "";
 
     public void editarEmpleadoPantalla(){
         accion = "modificar";
@@ -105,14 +109,13 @@ public class JsonMod extends JFrame implements ActionListener{
     }
 
     public void agregarEmpleadoPantalla(){
-        
     }
 
     public JButton getButtonAceptar() {
         return buttonAceptar;
     }
 
-    public void actualizarListaEmpleados() throws ErrorUpdateException, MissingIdException{
+    public void actualizarListaEmpleados() throws ErrorUpdateException, MissingIdException, ErrorNuevoEmpleadoException{
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
         JSONObject objAux = new JSONObject();
@@ -143,6 +146,50 @@ public class JsonMod extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     }
 
+    public JSONObject agregarEmpleado() throws ErrorNuevoEmpleadoException{
+        JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
+        JSONObject empleadoNuevo= new JSONObject();
+        JSONObject objAux = new JSONObject();
+        String idNuevoEmpleado="";
+        
+        
+
+        /*CORRECTO     
+        if(textFieldName.getText()=="" || textFieldLastName.getText()=="" || textFieldImg.getText()==""){
+            throw new ErrorNuevoEmpleadoException();
+        }
+
+        for (Object object : jsonArrayEmpleados) {
+            JSONObject jsonObjectAux = (JSONObject)object;
+            idNuevoEmpleado = (String)jsonObjectAux.get("id");
+        }
+        idNuevoEmpleado = String.valueOf(Integer.parseInt(idNuevoEmpleado) + Integer.parseInt("1"));
+        empleadoNuevo.put("id", idNuevoEmpleado);
+        empleadoNuevo.put("firstName", textFieldName.getText());
+        empleadoNuevo.put("lastName", textFieldLastName.getText());
+        empleadoNuevo.put("photo", textFieldImg.getText());
+        */
+        /*PRUEBAS*/
+
+        for (Object object : jsonArrayEmpleados) {
+            JSONObject jsonObjectAux = (JSONObject)object;
+            idNuevoEmpleado = (String)jsonObjectAux.get("id");
+        }
+
+        idNuevoEmpleado = String.valueOf(Integer.parseInt(idNuevoEmpleado) + Integer.parseInt("1"));
+        empleadoNuevo.put("id", idNuevoEmpleado);
+        empleadoNuevo.put("firstName", "EMANUEL");
+        empleadoNuevo.put("lastName", "GUZMAN");
+        empleadoNuevo.put("photo", "https://jsonformatter.org/img/Robert-Downey-Jr.jpg");
+
+        nombreNuevoEmpleado = (String)empleadoNuevo.get("firstName");
+
+        jsonArrayEmpleados.add(empleadoNuevo);
+
+        objAux.put("employee", jsonArrayEmpleados);
+        return objAux;
+    }
+
     public JSONObject eliminarEmpleado() throws MissingIdException{
         JSONArray jsonArrayEmpleados = JsonManager.obtenerJsonArray();
         JSONObject empleadoAux = new JSONObject();
@@ -156,7 +203,6 @@ public class JsonMod extends JFrame implements ActionListener{
             for (Object object : jsonArrayEmpleados) {
                 JSONObject jsonObjectAux = (JSONObject)object;
                 numEmpleadosOriginal++;
-
 
                 if (!jsonObjectAux.get("id").equals(identificador)) {
                     jsonObjectAux.put("id", idNuevo);
@@ -191,7 +237,7 @@ public class JsonMod extends JFrame implements ActionListener{
             empleadoAux.put("lastName", "GARCILAZO");
             empleadoAux.put("photo", "https://jsonformatter.org/img/Robert-Downey-Jr.jpg");
             nombreModificado = (String)empleadoAux.get("firstName");
-            */
+        */  
 
             /*Correcto */
            
@@ -223,8 +269,5 @@ public class JsonMod extends JFrame implements ActionListener{
             }
     }
     
-    public JSONObject agregarEmpleado(){
-        JSONObject objAux = new JSONObject();
-        return objAux;
-    }
+    
 }
