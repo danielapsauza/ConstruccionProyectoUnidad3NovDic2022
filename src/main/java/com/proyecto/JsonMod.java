@@ -196,22 +196,22 @@ public class JsonMod extends JFrame implements ActionListener{
         
         
 
-        /*CORRECTO     
+        /*CORRECTO     */
         if(textFieldName.getText()=="" || textFieldLastName.getText()=="" || textFieldImg.getText()==""){
             throw new ErrorNuevoEmpleadoException();
         }
 
         for (Object object : jsonArrayEmpleados) {
             JSONObject jsonObjectAux = (JSONObject)object;
-            idNuevoEmpleado = (String)jsonObjectAux.get("id");
+            idNuevoEmpleado = (jsonObjectAux.get("id")).toString();
         }
         idNuevoEmpleado = String.valueOf(Integer.parseInt(idNuevoEmpleado) + Integer.parseInt("1"));
         empleadoNuevo.put("id", idNuevoEmpleado);
         empleadoNuevo.put("firstName", textFieldName.getText());
         empleadoNuevo.put("lastName", textFieldLastName.getText());
         empleadoNuevo.put("photo", textFieldImg.getText());
-        */
-        /*PRUEBAS*/
+        
+        /*PRUEBAS
 
         for (Object object : jsonArrayEmpleados) {
             JSONObject jsonObjectAux = (JSONObject)object;
@@ -223,7 +223,7 @@ public class JsonMod extends JFrame implements ActionListener{
         empleadoNuevo.put("firstName", "EMANUEL");
         empleadoNuevo.put("lastName", "GUZMAN");
         empleadoNuevo.put("photo", "https://jsonformatter.org/img/Robert-Downey-Jr.jpg");
-
+*/
         nombreNuevoEmpleado = (String)empleadoNuevo.get("firstName");
 
         jsonArrayEmpleados.add(empleadoNuevo);
@@ -239,9 +239,9 @@ public class JsonMod extends JFrame implements ActionListener{
         empleadoAux.put("id", identificador);
         int idNuevo=1;
 
-        /*PRUEBAS*/
+        /*PRUEBAS
             identificador="2"; 
-
+        */
             for (Object object : jsonArrayEmpleados) {
                 JSONObject jsonObjectAux = (JSONObject)object;
                 numEmpleadosOriginal++;
