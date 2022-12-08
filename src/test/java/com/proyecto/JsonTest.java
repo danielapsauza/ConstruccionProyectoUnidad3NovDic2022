@@ -109,6 +109,6 @@ public class JsonTest {
         JsonMod editor = new JsonMod();
         editor.agregarEmpleado();
         controladorVista control1 = new controladorVista(pantalla1, editor);
-        assertTrue(editor.nombreNuevoEmpleado.equals("EMANUEL"));
+        assertTrue(editor.nombreNuevoEmpleado.equals("TOMAS"));
     }
 }

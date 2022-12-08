@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
+
+import com.proyecto.Exceptions.NotFoundIdException;
 import com.proyecto.Exceptions.ValidationException;
 
 public class Pantalla extends JFrame implements ActionListener{
@@ -35,26 +37,6 @@ public class Pantalla extends JFrame implements ActionListener{
 
     public Pantalla(List<ArrayList<Object>> informacionArray){
         crearPantalla(convertidorAMatriz(informacionArray));
-    }
-
-    public Pantalla (JSONArray jsonArray){
-        Object[] infoNueva = jsonArray.toArray();
-        Object[][] informacionNueva = new Object[infoNueva.length][4];
-        int i=0;
-
-        for(Object obj : infoNueva){
-            ArrayList aux = (ArrayList) obj;
-
-            Object[] aux2 = aux.toArray();
-            informacionNueva[i][0] = aux2[0].toString();
-            informacionNueva[i][1] = aux2[1].toString();
-            informacionNueva[i][2] = aux2[2].toString();
-
-            informacionNueva[i][3] = getImgIcon(aux2[3].toString());
-            
-            i++;
-        }
-        crearPantalla(informacionNueva);
     }
 
     public static Object[][] convertidorAMatriz(List<ArrayList<Object>> informacionArray){
@@ -144,11 +126,18 @@ public class Pantalla extends JFrame implements ActionListener{
         JsonMod editor = new JsonMod();
 
         if (buttonModificar.equals(e.getSource())) {
-            editor.editarEmpleadoPantalla();
-            //editor.editarEmpleadoPantalla(informacion);
+            try {
+                editor.editarEmpleadoPantalla();
+            } catch (NotFoundIdException e1) {
+                e1.printStackTrace();
+            }
             controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonEliminar.equals(e.getSource())) {
-            editor.eliminarEmpleadoPantalla();
+            try {
+                editor.eliminarEmpleadoPantalla();
+            } catch (NotFoundIdException e1) {
+                e1.printStackTrace();
+            }
             controladorVista control1 = new controladorVista(this, editor);
         } else if (buttonAgregar.equals(e.getSource())) {
             editor.agregarEmpleadoPantalla();
@@ -169,11 +158,8 @@ public class Pantalla extends JFrame implements ActionListener{
         JsonManager jsonManager2 = new JsonManager();
         JSONArray jsonArray2 = jsonManager2.readJson("src/employees.json");
         jsonManager2.jsonValidation(jsonArray2, "employee");
-        
         pantalla1 = new Pantalla(jsonManager2.jsonConverterToObject(jsonArray2));
-        
-        //System.out.println(jsonArray2);
-        //System.out.println("Editado________________________________________________________________________________________");
+
         
     }
     
