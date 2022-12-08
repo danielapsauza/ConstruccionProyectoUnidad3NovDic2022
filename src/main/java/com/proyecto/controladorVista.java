@@ -15,29 +15,26 @@ public class controladorVista implements ActionListener{
     public controladorVista(Pantalla pantalla, JsonMod jsonMod){
         this.pantalla = pantalla;
         this.jsonMod = jsonMod;
-
         this.jsonMod.getButtonAceptar().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (jsonMod.getButtonAceptar().equals(e.getSource())) {
-                    try {
-                        jsonMod.actualizarListaEmpleados();
-                    } catch (ErrorUpdateException | MissingIdException | ErrorNuevoEmpleadoException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
+            try {
+                jsonMod.actualizarListaEmpleados();
+            } catch (ErrorUpdateException | MissingIdException | ErrorNuevoEmpleadoException e1) {
+                e1.printStackTrace();
+            }}
+        jsonMod.dispose();
+        Pantalla.pantallaJframe.pack();
+        Pantalla.pantallaJframe.repaint();
+        Pantalla.pantallaJframe.dispose();
+            try {
+                pantalla.refresh(this.pantalla);
+            } catch (IOException | org.json.simple.parser.ParseException | ValidationException e1) {
+                e1.printStackTrace();
             }
-            jsonMod.dispose();
-            Pantalla.pantallaJframe.pack();
-            Pantalla.pantallaJframe.repaint();
-            Pantalla.pantallaJframe.dispose();
-                try {
-                    pantalla.refresh(this.pantalla);
-                } catch (IOException | org.json.simple.parser.ParseException | ValidationException e1) {
-                    e1.printStackTrace();
-                }
         }  
     }
 
